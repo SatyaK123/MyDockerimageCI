@@ -1,7 +1,7 @@
 FROM openjdk:10-jre-slim
 
-WORKDIR /app
-COPY ./target/*.jar /app
+WORKDIR /ap
+COPY ./target/*.jar /ap
 
 EXPOSE 8080
 
