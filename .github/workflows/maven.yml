@@ -28,21 +28,19 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Login to Docker Hub
+      run:  mvn clean install
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build and Push
+      run:  docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mavenimage2:latest  .
+    - name: login to Docker Hub
       uses: docker/login-action@v2
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Build and push
-      uses: docker/build-push-action@v4
-      with:
-         context: .
-         file: ./Dockerfile
-         push: true
-         tags: ${{ secrets.DOCKERHUB_USERNAME }}/mavenimage:latest
+    - name: push the image to Docker hub
+      run:  docker push ${{ secrets.DOCKERHUB_USERNAME }}/mavenimage2:latest
+ 
 
 
     
